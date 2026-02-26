@@ -1,0 +1,748 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Testlogika - Aplikasi Testing Logika</title>
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+
+        #app {
+            min-height: 100vh;
+        }
+
+        .app {
+            min-height: 100vh;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 20px;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        /* Header */
+        .header {
+            text-align: center;
+            color: white;
+            margin-bottom: 40px;
+            padding-top: 20px;
+        }
+
+        .header h1 {
+            font-size: 48px;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        .subtitle {
+            font-size: 18px;
+            opacity: 0.9;
+        }
+
+        /* Start Section */
+        .start-section {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 60vh;
+        }
+
+        .start-card {
+            background: white;
+            border-radius: 15px;
+            padding: 40px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+            max-width: 500px;
+            text-align: center;
+        }
+
+        .start-card h2 {
+            color: #333;
+            margin-bottom: 15px;
+            font-size: 28px;
+        }
+
+        .start-card p {
+            color: #666;
+            margin-bottom: 20px;
+            line-height: 1.6;
+        }
+
+        .info-box {
+            background: #f0f0f0;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+
+        .info-box p {
+            color: #333;
+            margin: 10px 0;
+            font-weight: 500;
+        }
+
+        /* Test Section */
+        .test-section {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .progress-bar {
+            background: rgba(255, 255, 255, 0.3);
+            height: 8px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: #fff;
+            transition: width 0.3s ease;
+        }
+
+        .progress-text {
+            color: white;
+            text-align: center;
+            margin-bottom: 20px;
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        /* Question Card */
+        .question-card {
+            background: white;
+            border-radius: 15px;
+            padding: 40px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+            margin-bottom: 20px;
+            animation: slideIn 0.3s ease;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .question-title {
+            color: #667eea;
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 15px;
+            text-transform: uppercase;
+        }
+
+        .question-text {
+            color: #333;
+            font-size: 22px;
+            font-weight: 600;
+            margin-bottom: 30px;
+            line-height: 1.5;
+        }
+
+        .options {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-bottom: 30px;
+        }
+
+        .option-button {
+            display: flex;
+            align-items: center;
+            padding: 16px 20px;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            background: white;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: left;
+            font-size: 16px;
+        }
+
+        .option-button:hover {
+            border-color: #667eea;
+            background: #f8f9ff;
+        }
+
+        .option-button.active {
+            border-color: #667eea;
+            background: #667eea;
+            color: white;
+        }
+
+        .option-label {
+            display: inline-block;
+            min-width: 35px;
+            font-weight: 700;
+            color: #667eea;
+        }
+
+        .option-button.active .option-label {
+            color: white;
+        }
+
+        .option-text {
+            flex: 1;
+        }
+
+        .button-section {
+            text-align: center;
+        }
+
+        .btn {
+            padding: 12px 30px;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn-primary:active {
+            transform: translateY(0);
+        }
+
+        .btn-submit {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 14px 40px;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn-submit:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn-submit:active {
+            transform: translateY(0);
+        }
+
+        .hint-text {
+            color: #999;
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        /* Result Section */
+        .result-section {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 60vh;
+        }
+
+        /* Result Card */
+        .result-card {
+            background: white;
+            border-radius: 15px;
+            padding: 40px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+            max-width: 500px;
+            text-align: center;
+            animation: slideIn 0.3s ease;
+        }
+
+        .result-header {
+            margin-bottom: 30px;
+        }
+
+        .result-title {
+            font-size: 28px;
+            margin-bottom: 20px;
+            font-weight: 700;
+        }
+
+        .result-title.success {
+            color: #10b981;
+        }
+
+        .result-title.warning {
+            color: #f59e0b;
+        }
+
+        .result-title.danger {
+            color: #ef4444;
+        }
+
+        .score-display {
+            display: flex;
+            justify-content: center;
+            margin: 20px 0;
+        }
+
+        .score-circle {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            font-weight: bold;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        .score-circle.success {
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+        }
+
+        .score-circle.warning {
+            background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+        }
+
+        .score-circle.danger {
+            background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+        }
+
+        .score-value {
+            font-size: 48px;
+            line-height: 1;
+        }
+
+        .score-total {
+            font-size: 18px;
+            margin-top: 5px;
+            opacity: 0.9;
+        }
+
+        .stats {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 15px;
+            margin: 30px 0;
+        }
+
+        .stat-item {
+            background: #f3f4f6;
+            padding: 15px;
+            border-radius: 10px;
+        }
+
+        .stat-label {
+            color: #666;
+            font-size: 12px;
+            text-transform: uppercase;
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+
+        .stat-value {
+            font-size: 24px;
+            font-weight: 700;
+            color: #333;
+        }
+
+        .stat-value.correct {
+            color: #10b981;
+        }
+
+        .stat-value.wrong {
+            color: #ef4444;
+        }
+
+        .grade-box {
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+        }
+
+        .grade-box.grade-success {
+            background: #ecfdf5;
+            border: 2px solid #10b981;
+        }
+
+        .grade-box.grade-warning {
+            background: #fffbeb;
+            border: 2px solid #f59e0b;
+        }
+
+        .grade-box.grade-danger {
+            background: #fef2f2;
+            border: 2px solid #ef4444;
+        }
+
+        .grade-label {
+            color: #666;
+            font-size: 12px;
+            text-transform: uppercase;
+            margin-bottom: 5px;
+            font-weight: 600;
+        }
+
+        .grade-value {
+            font-size: 36px;
+            font-weight: 700;
+        }
+
+        .grade-box.grade-success .grade-value {
+            color: #10b981;
+        }
+
+        .grade-box.grade-warning .grade-value {
+            color: #f59e0b;
+        }
+
+        .grade-box.grade-danger .grade-value {
+            color: #ef4444;
+        }
+
+        .btn-restart {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 14px 40px;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            width: 100%;
+        }
+
+        .btn-restart:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn-restart:active {
+            transform: translateY(0);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 36px;
+            }
+
+            .question-card,
+            .result-card,
+            .start-card {
+                padding: 25px;
+            }
+
+            .stats {
+                grid-template-columns: 1fr;
+            }
+
+            .score-circle {
+                width: 120px;
+                height: 120px;
+            }
+
+            .score-value {
+                font-size: 36px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div id="app"></div>
+
+    <script>
+        const { createApp, ref, computed } = Vue;
+
+        createApp({
+            template: `
+                <div class="app">
+                    <!-- Header -->
+                    <header class="header">
+                        <h1>🧠 TESTLOGIKA</h1>
+                        <p class="subtitle">Aplikasi Testing Logika Interaktif</p>
+                    </header>
+
+                    <!-- Tombol Mulai -->
+                    <div v-if="!testStarted" class="start-section">
+                        <div class="start-card">
+                            <h2>Selamat Datang di Testlogika!</h2>
+                            <p>Tes kemampuan logika Anda dengan soal-soal pilihan ganda yang menarik.</p>
+                            <div class="info-box">
+                                <p>📊 Total Soal: {{ questions.length }}</p>
+                                <p>⭐ Total Poin: {{ totalPoints }}</p>
+                            </div>
+                            <button @click="startTest" class="btn btn-primary">Mulai Test</button>
+                        </div>
+                    </div>
+
+                    <!-- Area Test -->
+                    <div v-if="testStarted && !testFinished" class="test-section">
+                        <div class="progress-bar">
+                            <div class="progress-fill" :style="{ width: progressPercentage + '%' }"></div>
+                        </div>
+                        <p class="progress-text">Soal {{ currentQuestionIndex + 1 }} dari {{ questions.length }}</p>
+
+                        <!-- Question Card -->
+                        <div class="question-card">
+                            <h2 class="question-title">Soal {{ currentQuestionIndex + 1 }}</h2>
+                            <p class="question-text">{{ currentQuestion.question }}</p>
+                            
+                            <div class="options">
+                                <button 
+                                    v-for="option in currentQuestion.options"
+                                    :key="option.id"
+                                    @click="selectAnswer(option.id)"
+                                    :class="['option-button', { active: selectedOption === option.id }]"
+                                >
+                                    <span class="option-label">{{ option.id.toUpperCase() }}.</span>
+                                    <span class="option-text">{{ option.text }}</span>
+                                </button>
+                            </div>
+
+                            <div class="button-section">
+                                <button 
+                                    v-if="selectedOption"
+                                    @click="submitAnswer" 
+                                    class="btn btn-submit"
+                                >
+                                    Jawab Soal
+                                </button>
+                                <p v-else class="hint-text">👆 Pilih salah satu jawaban terlebih dahulu</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Hasil Test -->
+                    <div v-if="testFinished" class="result-section">
+                        <!-- Result Card -->
+                        <div class="result-card">
+                            <div class="result-header">
+                                <h2 v-if="percentage >= 80" class="result-title success">🎉 Selamat! Anda Lulus!</h2>
+                                <h2 v-else-if="percentage >= 60" class="result-title warning">😊 Cukup Bagus!</h2>
+                                <h2 v-else class="result-title danger">😢 Perlu Belajar Lebih Keras</h2>
+                                
+                                <div class="score-display">
+                                    <div class="score-circle" :class="scoreClass">
+                                        <div class="score-value">{{ score }}</div>
+                                        <div class="score-total">/ {{ totalPoints }}</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="stats">
+                                <div class="stat-item">
+                                    <div class="stat-label">Jawaban Benar</div>
+                                    <div class="stat-value correct">{{ correctAnswers }} / {{ questions.length }}</div>
+                                </div>
+                                <div class="stat-item">
+                                    <div class="stat-label">Persentase</div>
+                                    <div class="stat-value">{{ percentage }}%</div>
+                                </div>
+                                <div class="stat-item">
+                                    <div class="stat-label">Jawaban Salah</div>
+                                    <div class="stat-value wrong">{{ questions.length - correctAnswers }}</div>
+                                </div>
+                            </div>
+
+                            <div class="grade-box" :class="gradeClass">
+                                <p class="grade-label">Nilai Akhir</p>
+                                <p class="grade-value">{{ grade }}</p>
+                            </div>
+
+                            <button @click="restartTest" class="btn btn-restart">
+                                🔄 Coba Lagi
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            `,
+            setup() {
+                // Data Soal
+                const questions = [
+                    {
+                        id: 1,
+                        question: "Jika A = 5 dan B = 3, berapa nilai A + B × 2?",
+                        options: [
+                            { id: "a", text: "11", isCorrect: true },
+                            { id: "b", text: "16", isCorrect: false },
+                            { id: "c", text: "13", isCorrect: false },
+                            { id: "d", text: "10", isCorrect: false }
+                        ],
+                        points: 10
+                    },
+                    {
+                        id: 2,
+                        question: "Urutan bilangan dari terkecil ke terbesar: 7, 3, 9, 2, 5",
+                        options: [
+                            { id: "a", text: "2, 3, 5, 7, 9", isCorrect: true },
+                            { id: "b", text: "3, 2, 5, 7, 9", isCorrect: false },
+                            { id: "c", text: "9, 7, 5, 3, 2", isCorrect: false },
+                            { id: "d", text: "2, 3, 7, 5, 9", isCorrect: false }
+                        ],
+                        points: 10
+                    },
+                    {
+                        id: 3,
+                        question: "Jika x = 12 dan y = 4, berapa nilai x ÷ y + 5?",
+                        options: [
+                            { id: "a", text: "8", isCorrect: true },
+                            { id: "b", text: "9", isCorrect: false },
+                            { id: "c", text: "7", isCorrect: false },
+                            { id: "d", text: "10", isCorrect: false }
+                        ],
+                        points: 10
+                    },
+                    {
+                        id: 4,
+                        question: "Berapa persen dari 200 adalah 50?",
+                        options: [
+                            { id: "a", text: "20%", isCorrect: false },
+                            { id: "b", text: "25%", isCorrect: true },
+                            { id: "c", text: "30%", isCorrect: false },
+                            { id: "d", text: "40%", isCorrect: false }
+                        ],
+                        points: 10
+                    },
+                    {
+                        id: 5,
+                        question: "Jika sebuah persegi memiliki sisi 6 cm, berapa luas persegi tersebut?",
+                        options: [
+                            { id: "a", text: "24 cm²", isCorrect: false },
+                            { id: "b", text: "36 cm²", isCorrect: true },
+                            { id: "c", text: "12 cm²", isCorrect: false },
+                            { id: "d", text: "48 cm²", isCorrect: false }
+                        ],
+                        points: 10
+                    }
+                ];
+
+                // State
+                const testStarted = ref(false);
+                const testFinished = ref(false);
+                const currentQuestionIndex = ref(0);
+                const selectedOption = ref(null);
+                const score = ref(0);
+                const correctAnswers = ref(0);
+
+                // Computed
+                const currentQuestion = computed(() => questions[currentQuestionIndex.value]);
+
+                const totalPoints = computed(() => {
+                    return questions.reduce((total, q) => total + q.points, 0);
+                });
+
+                const progressPercentage = computed(() => {
+                    return ((currentQuestionIndex.value + 1) / questions.length) * 100;
+                });
+
+                const percentage = computed(() => {
+                    return Math.round((score.value / totalPoints.value) * 100);
+                });
+
+                const grade = computed(() => {
+                    const pct = percentage.value;
+                    if (pct >= 90) return 'A';
+                    if (pct >= 80) return 'B';
+                    if (pct >= 70) return 'C';
+                    if (pct >= 60) return 'D';
+                    return 'E';
+                });
+
+                const scoreClass = computed(() => {
+                    const pct = percentage.value;
+                    if (pct >= 80) return 'success';
+                    if (pct >= 60) return 'warning';
+                    return 'danger';
+                });
+
+                const gradeClass = computed(() => {
+                    const pct = percentage.value;
+                    if (pct >= 80) return 'grade-success';
+                    if (pct >= 60) return 'grade-warning';
+                    return 'grade-danger';
+                });
+
+                // Methods
+                const startTest = () => {
+                    testStarted.value = true;
+                    testFinished.value = false;
+                    currentQuestionIndex.value = 0;
+                    selectedOption.value = null;
+                    score.value = 0;
+                    correctAnswers.value = 0;
+                };
+
+                const selectAnswer = (optionId) => {
+                    selectedOption.value = optionId;
+                };
+
+                const submitAnswer = () => {
+                    const question = currentQuestion.value;
+                    const selectedOpt = question.options.find(opt => opt.id === selectedOption.value);
+
+                    // Hitung skor
+                    if (selectedOpt.isCorrect) {
+                        score.value += question.points;
+                        correctAnswers.value++;
+                    }
+
+                    // Lanjut ke soal berikutnya
+                    if (currentQuestionIndex.value < questions.length - 1) {
+                        currentQuestionIndex.value++;
+                        selectedOption.value = null;
+                    } else {
+                        testFinished.value = true;
+                    }
+                };
+
+                const restartTest = () => {
+                    startTest();
+                };
+
+                return {
+                    testStarted,
+                    testFinished,
+                    currentQuestionIndex,
+                    currentQuestion,
+                    questions,
+                    score,
+                    correctAnswers,
+                    totalPoints,
+                    progressPercentage,
+                    percentage,
+                    grade,
+                    scoreClass,
+                    gradeClass,
+                    selectedOption,
+                    startTest,
+                    selectAnswer,
+                    submitAnswer,
+                    restartTest
+                };
+            }
+        }).mount('#app');
+    </script>
+</body>
+</html>
